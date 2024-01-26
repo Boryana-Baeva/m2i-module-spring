@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 public class Personne {
+    private Integer id;
     private String prenom;
     private String nom;
 
@@ -10,6 +11,14 @@ public class Personne {
     public Personne(String prenom, String nom) {
         this.prenom = prenom;
         this.nom = nom;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPrenom() {
@@ -31,7 +40,8 @@ public class Personne {
     @Override
     public String toString() {
         return "Personne{" +
-                "prenom='" + prenom + '\'' +
+                "id=" + id +
+                ", prenom='" + prenom + '\'' +
                 ", nom='" + nom + '\'' +
                 '}';
     }
