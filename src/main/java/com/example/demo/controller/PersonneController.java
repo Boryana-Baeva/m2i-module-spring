@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("api")
 @RestController
@@ -42,12 +43,16 @@ public class PersonneController {
     // GET /personnes/4
     @GetMapping("personnes/{id}")
     public ResponseEntity<Personne> getById(@PathVariable Integer id) {
-        Personne personne = annuaire.findById(id);
-        if(personne == null) {
+        Optional<Personne> optional = annuaire.findById(id);
+        //      optional
+        //          .map(ResponseEntity::ok)
+        //          .orElseGet(() -> ResponseEntity.notFound()
+        //          .build());
+        if(optional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.ok(personne);
+            return ResponseEntity.ok(optional.get());
         }
     }
 
