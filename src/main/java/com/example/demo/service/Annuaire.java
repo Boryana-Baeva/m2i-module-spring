@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Personne;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class Annuaire {
     private int idCount;
     private HashMap<Integer, Personne> personnes = new HashMap<>();
@@ -21,5 +24,13 @@ public class Annuaire {
 
     public Personne findById(Integer id) {
         return personnes.get(id);
+    }
+
+    public void delete(Integer id) {
+        personnes.remove(id);
+    }
+
+    public void update(Integer id, Personne personne) {
+        personnes.put(id, personne);
     }
 }
