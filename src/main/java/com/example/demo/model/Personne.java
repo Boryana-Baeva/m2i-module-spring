@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 public class Personne {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @JsonIgnore
     private Integer id;
     private String prenom;
     private String nom;

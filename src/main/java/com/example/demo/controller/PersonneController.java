@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Personne;
 import com.example.demo.service.Annuaire;
+import com.example.demo.service.AnnuaireDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class PersonneController {
     @Autowired
-    private Annuaire annuaire;
+    private AnnuaireDatabase annuaire;
 
     // GET /personnes
     @GetMapping("personnes")
@@ -25,34 +26,35 @@ public class PersonneController {
 
     // POST /personnes
     @PostMapping("personnes")
-    public ResponseEntity<?> addPersonne(@RequestBody Personne newPersonne) {
-        System.out.println(newPersonne);
+    public ResponseEntity<?> addPersonne(@RequestBody PersonneDTO dto) {
+        System.out.println(dto);
 
-        if(newPersonne.getNom().isBlank()) {
+        if(dto.getLastName() != null && dto.getLastName().isBlank()) {
             return ResponseEntity
                     .badRequest()
                     .body("Le nom est obligatoire !");
         }
         else {
-            annuaire.add(newPersonne);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newPersonne);
+            Personne personne = PersonneMapper.convertDTOToEntity(dto);
+            annuaire.add(personne);
+            PersonneDTO responseDTO = PersonneMapper.convertEntityToDTO(personne);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         }
 
     }
 
     // GET /personnes/4
     @GetMapping("personnes/{id}")
-    public ResponseEntity<Personne> getById(@PathVariable Integer id) {
+    public ResponseEntity<PersonneDTO> getById(@PathVariable Integer id) {
         Optional<Personne> optional = annuaire.findById(id);
-        //      optional
-        //          .map(ResponseEntity::ok)
-        //          .orElseGet(() -> ResponseEntity.notFound()
-        //          .build());
+
         if(optional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.ok(optional.get());
+            Personne p = optional.get();
+            PersonneDTO dto = PersonneMapper.convertEntityToDTO(p);
+            return ResponseEntity.ok(dto);
         }
     }
 
@@ -65,6 +67,6 @@ public class PersonneController {
     // PUT /personnes/4
     @PutMapping("personnes/{id}")
     public void update(@RequestBody Personne personne, @PathVariable Integer id) {
-        annuaire.update(id, personne);
+        annuaire.update(personne);
     }
 }
