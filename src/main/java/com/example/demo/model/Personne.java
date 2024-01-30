@@ -1,7 +1,11 @@
 package com.example.demo.model;
 
+import com.example.demo.dao.ChienRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="personnes")
@@ -15,6 +19,8 @@ public class Personne {
     @ManyToOne
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Chien> chiens = new ArrayList<>();
 
     public Adresse getAdresse() {
         return adresse;
@@ -54,6 +60,18 @@ public class Personne {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public void addChien(Chien ch) {
+        chiens.add(ch);
+    }
+
+    public List<Chien> getChiens() {
+        return chiens;
+    }
+
+    public void setChiens(List<Chien> chiens) {
+        this.chiens = chiens;
     }
 
     @Override
