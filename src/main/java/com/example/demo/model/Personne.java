@@ -12,6 +12,17 @@ public class Personne {
     private Integer id;
     private String prenom;
     private String nom;
+    @ManyToOne
+    @JoinColumn(name = "adresse_id")
+    private Adresse adresse;
+
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
 
     public Personne() {
     }
